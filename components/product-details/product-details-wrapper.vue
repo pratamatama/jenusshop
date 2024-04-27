@@ -1,9 +1,9 @@
 <template>
   <div class="tp-product-details-wrapper has-sticky">
     <div class="tp-product-details-category">
-      <span>{{ product.parent }}</span>
+      <span>{{ product?.categories?.name }}</span>
     </div>
-    <h3 class="tp-product-details-title">{{ product.name }}</h3>
+    <h3 class="tp-product-details-title">{{ product?.name }}</h3>
 
     <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
@@ -11,8 +11,8 @@
         class="tp-product-details-rating-wrapper d-flex align-items-center mb-10"
       >
         <div class="tp-product-details-rating">
-          <template v-if="product.average_ratings > 0">
-            <span v-for="(_, i) in product.average_ratings" :key="i"
+          <template v-if="product?.average_ratings > 0">
+            <span v-for="(_, i) in product?.average_ratings" :key="i"
               ><i class="fa-solid fa-star"></i
             ></span>
           </template>
@@ -23,15 +23,15 @@
           </template>
         </div>
         <div class="tp-product-details-reviews">
-          <span>({{ product.product_reviews?.length }} Reviews)</span>
+          <span>({{ product?.product_reviews?.length }} Reviews)</span>
         </div>
       </div>
     </div>
     <p class="whitespace-pre-wrap">
       {{
         textMore
-          ? product.description
-          : `${product.description.substring(0, 100)}...`
+          ? product?.description
+          : `${product?.description?.substring(0, 100)}...`
       }}
       <span @click="textMore = !textMore">{{
         textMore ? 'See less' : 'See more'
@@ -40,7 +40,7 @@
 
     <!-- price -->
     <div class="tp-product-details-price-wrapper mb-20">
-      <div v-if="product.discount > 0">
+      <div v-if="product?.discount > 0">
         <span class="tp-product-details-price old-price">{{
           toCurrency(product.price)
         }}</span>
@@ -54,12 +54,12 @@
         </span>
       </div>
       <span v-else class="tp-product-details-price">{{
-        toCurrency(product.price)
+        toCurrency(product?.price)
       }}</span>
     </div>
 
     <!-- product countdown start -->
-    <div v-if="product.offerDate?.endDate">
+    <div v-if="product?.offerDate?.endDate">
       <product-details-countdown :product="product" />
     </div>
     <!-- product countdown end -->
@@ -79,15 +79,15 @@
       <div class="tp-product-details-query">
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>SKU: </span>
-          <p>{{ product.sku }}</p>
+          <p>{{ product?.sku }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Category: </span>
-          <p>{{ product.categories?.name }}</p>
+          <p>{{ product?.categories?.name }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>
-          <p>{{ product.tags?.map((tag) => tag.name).join(', ') }}</p>
+          <p>{{ product?.tags?.map((tag: any) => tag.name).join(', ') }}</p>
         </div>
       </div>
     </div>
@@ -103,16 +103,12 @@ const props = withDefaults(
 )
 let textMore = ref<boolean>(false)
 
-const hasColorData = computed(() =>
-  props.product.imageURLs.some((item) => item?.color && item?.color?.name),
-)
-
 // disini untuk mengubah description untuk intro membeli
 
 const introBuy = 'Halo, Saya ingin order produk'
 const buyInWa = `${introBuy} ${
   props.product.name
-} - ${props.product.description.substring(0, 100)}...`
+} - ${props.product.description?.substring(0, 100)}...`
 </script>
 
 <style lang="scss">

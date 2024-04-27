@@ -1,13 +1,13 @@
 <template>
   <div class="tp-product-sm-item d-flex align-items-center">
     <div class="tp-product-thumb mr-25 fix">
-      <nuxt-link :href="`/product-details/${item.slug}`">
+      <nuxt-link :href="`/product-details/${item.id}`">
         <img :src="item.image" alt="product-img" width="140" height="140" />
       </nuxt-link>
     </div>
     <div class="tp-product-sm-content">
       <div class="tp-product-category">
-        <nuxt-link :href="`/product-details/${item.slug}`">{{
+        <nuxt-link :href="`/product-details/${item.id}`">{{
           item.categories.name
         }}</nuxt-link>
       </div>

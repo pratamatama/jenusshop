@@ -1,33 +1,43 @@
 <template>
-  <div v-if="product">
-      <!-- breadcrumb start -->
-      <product-details-breadcrumb :product="product" />
-      <!-- breadcrumb end -->
+  <div v-if="!pending && product">
+    <!-- breadcrumb start -->
+    <product-details-breadcrumb :product="product" />
+    <!-- breadcrumb end -->
 
-      <!-- product details area start -->
-      <product-details-area :product="product" />
-      <!-- product details area end -->
+    <!-- product details area start -->
+    <product-details-area :product="product" />
+    <!-- product details area end -->
 
-      <!-- related products start -->
-      <product-related :product-id="product.id" :category="product.category.name" />
-      <!-- related products end -->
+    <!-- related products start -->
+    <product-related
+      :product-id="product.id"
+      :category="product.categories.name"
+    />
+    <!-- related products end -->
   </div>
 </template>
 
 <script setup lang="ts">
-import product_data from '@/data/product-data';
-import { useProductStore } from '@/pinia/useProductStore';
-import type { IProduct } from '@/types/product-type';
+import { useProductStore } from '@/pinia/useProductStore'
 const route = useRoute()
 
-const productStore = useProductStore();
+const productStore = useProductStore()
 
-let product = ref<IProduct | undefined>();
-useSeoMeta({ title: "Product Details Page" });
+const id = computed(() => route.params.id)
+const { data: product, pending } = await useFetch<any>(
+  `/api/products/${id.value}`,
+  { watch: [id] },
+)
+
+const { data: products, pending: productsPending } = await useFetch<any>(
+  `/api/products`,
+)
+
+useSeoMeta({ title: 'Product Details Page' })
 onMounted(() => {
-  product.value = product_data.find(b => b.id === route.params.id);
-  if(product.value?.img){
-    productStore.activeImg  = product.value.img;
+  product.value = products.value.find((b: any) => b.id == route.params.id)
+  if (product.value?.image) {
+    productStore.activeImg = product.value.image
   }
-});
+})
 </script>

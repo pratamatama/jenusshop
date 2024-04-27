@@ -15,10 +15,15 @@ export default defineEventHandler(async (event) => {
         sub_categories(*),
         product_reviews(*),
         tags(*),
-        brand_officials(*)
+        brand_officials(*),
+        product_infos(*)
       `,
     )
     .not('published_at', 'is', null)
+    .order('id', {
+      referencedTable: 'product_infos',
+      ascending: true,
+    })
 
   if (params.random) query = query.order('id', { ascending: false })
   if (params.featured) query = query.eq('featured', true)

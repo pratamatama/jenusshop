@@ -5,9 +5,7 @@
         <div class="row">
           <div class="col-xl-7 col-lg-6">
             <!-- product details thumb start -->
-            <product-details-thumb
-              :product="product"
-            />
+            <product-details-thumb :product="product" />
             <!-- product details thumb end -->
           </div>
           <!-- col end -->
@@ -33,12 +31,10 @@
   </section>
 
   <!-- video modal start -->
-  <modal-video/>
+  <modal-video />
   <!-- video modal end -->
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from "@/types/product-type";
- const props = defineProps<{ product: IProduct; }>()
-
+const props = defineProps<{ product: any }>()
 </script>

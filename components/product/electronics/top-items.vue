@@ -49,7 +49,10 @@ import product_data from '@/data/product-data'
 
 let active_tab = ref('New')
 
-const isFeatured = computed(() => active_tab.value === 'Featured')
+const isFeatured = computed(() => {
+  if (active_tab.value === 'New') return undefined
+  return active_tab.value === 'Featured'
+})
 const isTop = computed(() => active_tab.value === 'Top Sellers')
 
 const { data } = await useFetch('/api/products', {

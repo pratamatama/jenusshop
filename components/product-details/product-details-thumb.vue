@@ -7,7 +7,7 @@
         role="tablist"
       >
         <button
-          v-for="(item, i) in product.images"
+          v-for="(item, i) in product?.images"
           :key="i"
           @click="productStore.handleImageActive(item.url)"
           :class="`nav-link ${
@@ -25,7 +25,7 @@
           style="background-color: #f5f6f8"
         >
           <img :src="productStore.activeImg" alt="prd-image" />
-          <div v-if="product.videoId" class="tp-product-details-thumb-video">
+          <div v-if="product?.videoId" class="tp-product-details-thumb-video">
             <a
               @click="utilsStore.playVideo(product.videoId)"
               class="tp-product-details-thumb-video-btn cursor-pointer popup-video"
@@ -39,7 +39,7 @@
   </div>
 
   <!-- modal video component -->
-  <modal-video v-if="product.videoId" />
+  <modal-video v-if="product?.videoId" />
   <!-- modal video component -->
 </template>
 
