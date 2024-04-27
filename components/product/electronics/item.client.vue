@@ -108,7 +108,7 @@
     } tp-product-item transition-3`"
   >
     <div class="tp-product-thumb p-relative fix m-img">
-      <nuxt-link :href="`/product-details/${item.id}`">
+      <nuxt-link :href="`/product-details/${item.product_id}`">
         <img :src="item.products.thumbnail" alt="product-electronic" />
       </nuxt-link>
 
