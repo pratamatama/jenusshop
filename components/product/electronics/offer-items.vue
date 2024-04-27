@@ -51,7 +51,7 @@
               :modules="[Pagination]"
               class="tp-product-offer-slider-active swiper-container"
             >
-              <SwiperSlide v-for="(item, i) in offer_products" :key="i">
+              <SwiperSlide v-for="(item, i) in data" :key="item.id">
                 <ProductElectronicsItem :item="item" :offer_style="true" />
               </SwiperSlide>
               <div
@@ -69,6 +69,8 @@
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination } from 'swiper/modules'
 import product_data from '@/data/product-data'
+
+const { data } = await useFetch('/api/dods')
 
 const offer_products = product_data.filter(
   (p) => p.productType === 'electronics' && p.offerDate,

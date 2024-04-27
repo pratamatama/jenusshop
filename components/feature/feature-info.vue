@@ -6,7 +6,7 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-delivery/>
+                <svg-delivery />
               </span>
             </div>
             <div class="tp-feature-content">
@@ -19,11 +19,11 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-refund/>
+                <svg-refund />
               </span>
             </div>
             <div class="tp-feature-content">
-              <h3 class="tp-feature-title">Return & Refunf</h3>
+              <h3 class="tp-feature-title">Return & Refund</h3>
               <p>Maney back guarantee</p>
             </div>
           </div>
@@ -32,12 +32,12 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-discount/>
+                <svg-discount />
               </span>
             </div>
             <div class="tp-feature-content">
               <h3 class="tp-feature-title">Member Discount</h3>
-              <p>One very order over Rp.140.00</p>
+              <p>For loyal customers</p>
             </div>
           </div>
         </div>
@@ -45,19 +45,18 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-support/>
-            </span>
-          </div>
-          <div class="tp-feature-content">
-            <h3 class="tp-feature-title">Support 24/7</h3>
-            <p>Contact us 24 hours a day</p>
+                <svg-support />
+              </span>
+            </div>
+            <div class="tp-feature-content">
+              <h3 class="tp-feature-title">Support 24/7</h3>
+              <p>Contact us 24 hours a day</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

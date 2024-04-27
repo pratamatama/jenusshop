@@ -73,7 +73,7 @@
           <div class="tp-product-gadget-wrapper">
             <div class="row">
               <div
-                v-for="item in product_data.slice(0, 6)"
+                v-for="item in data"
                 :key="item.id"
                 class="col-xl-4 col-sm-6 col-6"
               >
@@ -88,24 +88,28 @@
 </template>
 
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { EffectFade, Pagination } from "swiper/modules";
-import product_data from "@/data/product-data";
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { EffectFade, Pagination } from 'swiper/modules'
+import product_data from '@/data/product-data'
+
+const { data } = await useFetch('/api/products', {
+  query: { limit: 6 },
+})
 
 const banner_data: {
-  bg: string;
-  title: string;
-  price: number;
+  bg: string
+  title: string
+  price: number
 }[] = [
   {
-    bg: "/img/product/gadget/gadget-banner-1.jpg",
-    title: "Selected novelty <br /> Products",
+    bg: '/img/product/gadget/gadget-banner-1.jpg',
+    title: 'Selected novelty <br /> Products',
     price: 99,
   },
   {
-    bg: "/img/product/gadget/gadget-banner-2.jpg",
-    title: "Top Rated <br /> Products",
+    bg: '/img/product/gadget/gadget-banner-2.jpg',
+    title: 'Top Rated <br /> Products',
     price: 55,
   },
-];
+]
 </script>

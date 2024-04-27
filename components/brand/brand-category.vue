@@ -34,11 +34,11 @@
               class="tp-brand-slider-active swiper-container"
             >
               <SwiperSlide
-                v-for="(brand, i) in brand_data"
+                v-for="(brand, i) in data"
                 :key="i"
                 class="tp-brand-item text-center"
               >
-                <nuxt-link :to="brand.link">
+                <nuxt-link :to="`shop?brand=${brand.slug}`">
                   <img :src="brand.logo" alt="brand" />
                 </nuxt-link>
               </SwiperSlide>
@@ -62,45 +62,8 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
-// brand data
-const brand_data = [
-  {
-    logo: '/img/brand/adata.png',
-    link: 'shop?brand=adata',
-  },
-  {
-    logo: '/img/brand/galax.png',
-    link: 'shop?brand=galax',
-  },
-  {
-    logo: '/img/brand/lenovo.png',
-    link: 'shop?brand=lenovo',
-  },
-  {
-    logo: '/img/brand/logitech.png',
-    link: 'shop?brand=logitech',
-  },
-  {
-    logo: '/img/brand/samsung.webp',
-    link: 'shop?brand=samsung',
-  },
-  {
-    logo: '/img/brand/sony.png',
-    link: 'shop?brand=sony',
-  },
-  {
-    logo: '/img/brand/deepcool.webp',
-    link: 'shop?brand=deepcool',
-  },
-  {
-    logo: '/img/brand/apple.png',
-    link: 'shop?brand=apple',
-  },
-  {
-    logo: '/img/brand/antec.webp',
-    link: 'shop?brand=antec',
-  },
-]
+
+const { data } = await useFetch('/api/brand-officials')
 </script>
 
 <style scoped>

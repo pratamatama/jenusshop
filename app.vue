@@ -1,21 +1,25 @@
 <template>
   <NuxtLayout>
+    <NuxtLoadingIndicator />
     <NuxtPage />
-    <modal-product/>
+    <modal-product />
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { useProductFilterStore } from './pinia/useProductFilterStore';
-import { useUtilityStore } from './pinia/useUtilityStore';
+import { useProductFilterStore } from './pinia/useProductFilterStore'
+import { useUtilityStore } from './pinia/useUtilityStore'
 
-const route = useRoute();
-const prdFilterStore = useProductFilterStore();
-const utilsStore = useUtilityStore();
+const route = useRoute()
+const prdFilterStore = useProductFilterStore()
+const utilsStore = useUtilityStore()
 
-watch(() => route.path, () => {
-  prdFilterStore.$reset
-  prdFilterStore.handleResetFilter();
-  utilsStore.removeBackdrop();
-})
+watch(
+  () => route.path,
+  () => {
+    prdFilterStore.$reset
+    prdFilterStore.handleResetFilter()
+    utilsStore.removeBackdrop()
+  },
+)
 </script>

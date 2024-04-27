@@ -29,7 +29,7 @@
           <div class="tp-product-tab-content">
             <div class="row">
               <div
-                v-for="(item, i) in filteredProducts"
+                v-for="(item, i) in data"
                 :key="i"
                 class="col-xl-3 col-lg-3 col-sm-6 col-6"
               >
@@ -48,6 +48,18 @@ import { ref, onMounted, computed } from 'vue'
 import product_data from '@/data/product-data'
 
 let active_tab = ref('New')
+
+const isFeatured = computed(() => active_tab.value === 'Featured')
+const isTop = computed(() => active_tab.value === 'Top Sellers')
+
+const { data } = await useFetch('/api/products', {
+  query: {
+    limit: 8,
+    featured: isFeatured,
+    top: isTop,
+  },
+  watch: [isFeatured, isTop],
+})
 
 const tabs = ['New', 'Featured', 'Top Sellers']
 // handleActiveTab

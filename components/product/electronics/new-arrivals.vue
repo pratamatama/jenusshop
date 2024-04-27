@@ -58,7 +58,7 @@
               :modules="[Pagination, Navigation]"
               class="tp-product-arrival-active swiper-container"
             >
-              <SwiperSlide v-for="(item, i) in new_arrivals" :key="i">
+              <SwiperSlide v-for="(item, i) in data" :key="i">
                 <ProductElectronicsItem :item="item" />
               </SwiperSlide>
             </Swiper>
@@ -73,9 +73,5 @@
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, Navigation } from 'swiper/modules'
 
-import product_data from '@/data/product-data'
-
-const new_arrivals = product_data
-  .filter((p) => p.productType === 'electronics')
-  .slice(-5)
+const { data } = await useFetch('/api/products')
 </script>

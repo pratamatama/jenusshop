@@ -12,7 +12,7 @@
 
             <div class="tp-product-sm-wrapper mr-20">
               <ProductElectronicsSmItem
-                v-for="item in discount_products"
+                v-for="item in discountProducts"
                 :key="item.id"
                 :item="item"
               />
@@ -29,7 +29,7 @@
 
             <div class="tp-product-sm-wrapper mr-20">
               <ProductElectronicsSmItem
-                v-for="item in featured_products"
+                v-for="item in featuredProducts"
                 :key="item.id"
                 :item="item"
               />
@@ -46,7 +46,7 @@
 
             <div class="tp-product-sm-wrapper mr-20">
               <ProductElectronicsSmItem
-                v-for="item in selling_products"
+                v-for="item in topProducts"
                 :key="item.id"
                 :item="item"
               />
@@ -61,16 +61,18 @@
 <script setup lang="ts">
 import product_data from '@/data/product-data'
 
-const all_products = product_data
-const discount_products = all_products
-  .filter((p) => p.productType === 'electronics' && p.discount > 0)
-  .slice(0, 3)
-const featured_products = all_products
-  .filter((p) => p.productType === 'electronics' && p.featured)
-  .slice(0, 3)
-const selling_products = all_products
-  .filter((p) => p.productType === 'electronics')
-  .slice()
-  .sort((a, b) => b.sellCount - a.sellCount)
-  .slice(0, 3)
+const { data: discountProducts, pending: discountProductsPending } = useFetch(
+  '/api/products',
+  { query: { discount: true, random: true, limit: 3 } },
+)
+
+const { data: featuredProducts, pending: featuredProductsPending } = useFetch(
+  '/api/products',
+  { query: { featured: true, random: true, limit: 3 } },
+)
+
+const { data: topProducts, pending: topProductsPending } = useFetch(
+  '/api/products',
+  { query: { top: true, random: true, limit: 3 } },
+)
 </script>

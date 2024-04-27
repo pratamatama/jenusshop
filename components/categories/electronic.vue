@@ -10,23 +10,23 @@
       </div>
 
       <div class="row items row-cols-xl-5 row-cols-lg-5">
-        <div v-for="(item, i) in category_items" :key="i" class="col">
+        <div v-for="(item, i) in data" :key="i" class="col">
           <div class="tp-product-category-item text-center mb-40">
             <div class="tp-product-category-thumb fix">
               <a
                 class="cursor-pointer"
-                @click="handleParentCategory(item.parent)"
+                @click="handleParentCategory(item.slug)"
               >
-                <img :src="item.img" alt="product-category" />
+                <img :src="item.image" alt="product-category" />
               </a>
             </div>
             <div class="tp-product-category-content">
               <h3 class="tp-product-category-title">
                 <a
                   class="cursor-pointer"
-                  @click="handleParentCategory(item.parent)"
+                  @click="handleParentCategory(item.slug)"
                 >
-                  {{ item.parent }}
+                  {{ item.name }}
                 </a>
               </h3>
               <p>{{ item.products.length }} Product</p>
@@ -39,16 +39,10 @@
 </template>
 
 <script setup lang="ts">
-import category_data from '@/data/category-data'
-const category_items = category_data.filter(
-  (c) => c.productType === 'electronics',
-)
+const { data } = await useFetch('/api/categories')
 
-const router = useRouter()
-// handle parent
 const handleParentCategory = (value: string) => {
-  const newCategory = value.toLowerCase().replace('&', '').split(' ').join('-')
-  router.push(`/shop?category=${newCategory}`)
+  navigateTo(`/shop?category=${value}`)
 }
 </script>
 
