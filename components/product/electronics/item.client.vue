@@ -30,16 +30,6 @@
             <svg-quick-view />
             <span class="tp-product-tooltip">Quick View</span>
           </button>
-          <a
-            :href="item.shopeeLink"
-            target="_blank"
-            type="button"
-            class="tp-product-action-btn tp-product-quick-view-btn"
-          >
-            <img class="icon" width="20" src="/img/icon/sp.png" alt="" />
-            <!-- <svg-wishlist /> -->
-            <span class="tp-product-tooltip">View Product</span>
-          </a>
         </div>
       </div>
     </div>
@@ -147,16 +137,6 @@
             <svg-quick-view />
             <span class="tp-product-tooltip">Quick View</span>
           </button>
-          <a
-            :href="item.products.shopeeLink"
-            target="_blank"
-            type="button"
-            class="tp-product-action-btn tp-product-quick-view-btn"
-          >
-            <img class="icon" width="20" src="/img/icon/sp.png" alt="" />
-            <!-- <svg-wishlist /> -->
-            <span class="tp-product-tooltip">View Product</span>
-          </a>
         </div>
       </div>
     </div>

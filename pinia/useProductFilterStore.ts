@@ -1,131 +1,161 @@
-import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
-import product_data from "@/data/product-data";
+import { defineStore } from 'pinia'
+import { ref, computed, watch } from 'vue'
 
-export const useProductFilterStore = defineStore("product_filter", () => {
-  const route = useRoute();
-  const router = useRouter();
-  let selectVal = ref<string>("");
+export const useProductFilterStore = defineStore('product_filter', () => {
+  const route = useRoute()
+  const router = useRouter()
+  let selectVal = ref<string>('')
+  const products = ref<any[]>([])
 
-  const handleSelectFilter = (e: { value: string; text: string }) => {
-    console.log('handle selec',e)
-    selectVal.value = e.value;
+  const loadProducts = async () => {
+    try {
+      const data = await $fetch('/api/products')
+      products.value = data
+    } catch (error) {
+      console.log('failed to fetch products', error)
+    }
   }
 
-  const maxProductPrice = product_data.reduce((max, product) => {
-    return product.price > max ? product.price : max;
-  }, 0);
+  const handleSelectFilter = (e: { value: string; text: string }) => {
+    console.log('handle selec', e)
+    selectVal.value = e.value
+  }
 
-  let priceValues = ref([0, maxProductPrice]);
+  const maxProductPrice = products.value.reduce((max, product) => {
+    return product.price > max ? product.price : max
+  }, 0)
+
+  let priceValues = ref([0, maxProductPrice])
 
   const handlePriceChange = (value: number[]) => {
-    priceValues.value = value;
-  };
+    priceValues.value = value
+  }
 
   const handleResetFilter = () => {
-    priceValues.value = [0, maxProductPrice];
-  };
+    priceValues.value = [0, maxProductPrice]
+  }
 
   // filteredProducts
   const filteredProducts = computed(() => {
     if (route.query.minPrice && route.query.maxPrice) {
-      return product_data.filter(
+      return products.value.filter(
         (p) =>
           p.price >= Number(route.query.minPrice) &&
-          p.price <= Number(route.query.maxPrice)
-      );
+          p.price <= Number(route.query.maxPrice),
+      )
     } else if (route.query.status) {
-      if (route.query.status === "on-sale") {
-        return product_data.filter((p) => p.discount > 0);
-      } else if (route.query.status === "in-stock") {
-        return product_data.filter((p) => p.status === "in-stock");
+      if (route.query.status === 'on-sale') {
+        return products.value.filter((p) => p.discount > 0)
+      } else if (route.query.status === 'in-stock') {
+        return products.value.filter((p) => p.status === 'in-stock')
       }
     } else if (route.query.category) {
-      return product_data.filter(
+      return products.value.filter(
         (p) =>
-          p.parent.toLowerCase().replace("&", "").split(" ").join("-") ===
-          route.query.category
-      );
+          p.categories.name
+            .toLowerCase()
+            .replace('&', '')
+            .split(' ')
+            .join('-') === route.query.category,
+      )
     } else if (route.query.subCategory) {
-      return product_data.filter(
+      return products.value.filter(
         (p) =>
-          p.children.toLowerCase().replace("&", "").split(" ").join("-") ===
-          route.query.subCategory
-      );
+          p.subcategories.name
+            .toLowerCase()
+            .replace('&', '')
+            .split(' ')
+            .join('-') === route.query.subCategory,
+      )
     } else if (route.query.brand) {
-      return product_data.filter(
+      return products.value.filter(
         (p) =>
-          p.brand.name.toLowerCase().replace("&", "").split(" ").join("-") ===
-          route.query.brand
-      );
+          p.brand_officials?.name
+            .toLowerCase()
+            .replace('&', '')
+            .split(' ')
+            .join('-') === route.query.brand,
+      )
     } else if (selectVal.value) {
-      if (selectVal.value === "default-sorting") {
-        return product_data;
-      } else if (selectVal.value === "low-to-hight") {
-        return product_data
+      if (selectVal.value === 'default-sorting') {
+        return products.value
+      } else if (selectVal.value === 'low-to-hight') {
+        return products.value
           .slice()
-          .sort((a, b) => Number(a.price) - Number(b.price));
-      } else if (selectVal.value === "high-to-low") {
-        return product_data
+          .sort((a, b) => Number(a.price) - Number(b.price))
+      } else if (selectVal.value === 'high-to-low') {
+        return products.value
           .slice()
-          .sort((a, b) => Number(b.price) - Number(a.price));
-      } else if (selectVal.value === "new-added") {
-        return product_data.slice(-8);
-      } else if (selectVal.value === "on-sale") {
-        return product_data.filter((p) => p.discount > 0);
+          .sort((a, b) => Number(b.price) - Number(a.price))
+      } else if (selectVal.value === 'new-added') {
+        return products.value.slice(-8)
+      } else if (selectVal.value === 'on-sale') {
+        return products.value.filter((p) => p.discount > 0)
       } else {
-        return product_data;
+        return products.value
       }
     } else {
-      return product_data;
+      return products.value
     }
-  });
+  })
 
   // filteredProducts
   const searchFilteredItems = computed(() => {
-    let filteredProducts = [...product_data];
-  
-    if (route.query.searchText && !route.query.productType) { 
+    let filteredProducts = [...products.value]
+
+    if (route.query.searchText && !route.query.productType) {
       filteredProducts = filteredProducts.filter((prd) =>
-        prd.title.toLowerCase().includes(route.query.searchText.toLowerCase())
-      );
-    } 
-    if (!route.query.searchText && route.query.productType) { 
+        prd.title.toLowerCase().includes(route.query.searchText.toLowerCase()),
+      )
+    }
+    if (!route.query.searchText && route.query.productType) {
       filteredProducts = filteredProducts.filter(
-        (prd) => prd.productType.toLowerCase() === route.query.productType.toLowerCase()
-      );
-    } 
-    if (route.query.searchText && route.query.productType) { 
-      filteredProducts = filteredProducts.filter(
-        (prd) => prd.productType.toLowerCase() === route.query.productType.toLowerCase()
-      ).filter(p => p.title.toLowerCase().includes(route.query.searchText.toLowerCase()));
-    } 
+        (prd) =>
+          prd.productType.toLowerCase() ===
+          route.query.productType.toLowerCase(),
+      )
+    }
+    if (route.query.searchText && route.query.productType) {
+      filteredProducts = filteredProducts
+        .filter(
+          (prd) =>
+            prd.productType.toLowerCase() ===
+            route.query.productType.toLowerCase(),
+        )
+        .filter((p) =>
+          p.title.toLowerCase().includes(route.query.searchText.toLowerCase()),
+        )
+    }
     switch (selectVal.value) {
-      case "default-sorting":
-        break;
-      case "low-to-high":
-        filteredProducts = filteredProducts.slice().sort((a, b) => Number(a.price) - Number(b.price));
-        break;
-      case "high-to-low":
-        filteredProducts = filteredProducts.slice().sort((a, b) => Number(b.price) - Number(a.price));
-        break;
-      case "new-added":
-        filteredProducts = filteredProducts.slice(-6);
-        break;
-      case "on-sale":
-        filteredProducts = filteredProducts.filter((p) => p.discount > 0);
-        break;
+      case 'default-sorting':
+        break
+      case 'low-to-high':
+        filteredProducts = filteredProducts
+          .slice()
+          .sort((a, b) => Number(a.price) - Number(b.price))
+        break
+      case 'high-to-low':
+        filteredProducts = filteredProducts
+          .slice()
+          .sort((a, b) => Number(b.price) - Number(a.price))
+        break
+      case 'new-added':
+        filteredProducts = filteredProducts.slice(-6)
+        break
+      case 'on-sale':
+        filteredProducts = filteredProducts.filter((p) => p.discount > 0)
+        break
       default:
     }
-    return filteredProducts;
-  });
-  
+    return filteredProducts
+  })
 
   watch(
     () => route.query || route.path,
-    () => {}
-  );
+    () => {},
+  )
   return {
+    loadProducts,
     maxProductPrice,
     priceValues,
     handleSelectFilter,
@@ -134,5 +164,5 @@ export const useProductFilterStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
-  };
-});
+  }
+})

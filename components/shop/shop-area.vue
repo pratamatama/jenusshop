@@ -1,9 +1,17 @@
 <template>
   <section
-    :class="`tp-shop-area pb-120 ${full_width ? 'tp-shop-full-width-padding' : ''}`"
+    :class="`tp-shop-area pb-120 ${
+      full_width ? 'tp-shop-full-width-padding' : ''
+    }`"
   >
     <div
-      :class="`${full_width? 'container-fluid': shop_1600? 'container-shop': 'container'}`"
+      :class="`${
+        full_width
+          ? 'container-fluid'
+          : shop_1600
+          ? 'container-shop'
+          : 'container'
+      }`"
     >
       <div class="row">
         <div v-if="!shop_right_side && !shop_no_side" class="col-xl-3 col-lg-4">
@@ -11,7 +19,7 @@
           <shop-sidebar :shop_full="full_width" :shop_1600="shop_1600" />
           <!-- shop sidebar end -->
         </div>
-        <div :class="`${shop_no_side?'col-xl-12':'col-xl-9 col-lg-8'}`">
+        <div :class="`${shop_no_side ? 'col-xl-12' : 'col-xl-9 col-lg-8'}`">
           <div class="tp-shop-main-wrapper">
             <div class="tp-shop-top mb-45">
               <div class="row">
@@ -21,7 +29,9 @@
                       <ul class="nav nav-tabs" id="productTab" role="tablist">
                         <li class="nav-item" role="presentation">
                           <button
-                            :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
+                            :class="`nav-link ${
+                              active_tab === 'grid' ? 'active' : ''
+                            }`"
                             @click="handleActiveTab('grid')"
                           >
                             <svg-grid />
@@ -29,7 +39,9 @@
                         </li>
                         <li class="nav-item" role="presentation">
                           <button
-                            :class="`nav-link ${active_tab === 'list' ? 'active' : ''}`"
+                            :class="`nav-link ${
+                              active_tab === 'list' ? 'active' : ''
+                            }`"
                             @click="handleActiveTab('list')"
                           >
                             <svg-list />
@@ -39,8 +51,11 @@
                     </div>
                     <div class="tp-shop-top-result">
                       <p>
-                        Showing 1–{{ store.filteredProducts?.slice(startIndex,endIndex).length }} of
-                        {{ product_data.length }} results
+                        Showing 1–{{
+                          store.filteredProducts?.slice(startIndex, endIndex)
+                            .length
+                        }}
+                        of {{ product_data.length }} results
                       </p>
                     </div>
                   </div>
@@ -56,7 +71,10 @@
               <div v-if="active_tab === 'grid'">
                 <div class="row infinite-container">
                   <div
-                    v-for="item in store.filteredProducts?.slice(startIndex,endIndex)"
+                    v-for="item in store.filteredProducts?.slice(
+                      startIndex,
+                      endIndex,
+                    )"
                     :key="item.id"
                     class="col-xl-4 col-md-6 col-sm-6 col-6 infinite-item"
                   >
@@ -74,7 +92,7 @@
                     <product-list-item
                       v-for="item in store.filteredProducts?.slice(
                         startIndex,
-                        endIndex
+                        endIndex,
                       )"
                       :key="item.id"
                       :item="item"
@@ -106,48 +124,50 @@
           <shop-sidebar :shop_right="shop_right_side" />
           <!-- shop sidebar end -->
         </div>
-
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import product_data from "@/data/product-data";
-import { useProductFilterStore } from "@/pinia/useProductFilterStore";
-import type { IProduct } from "@/types/product-type";
-const route = useRoute();
+import { ref, watch } from 'vue'
+import product_data from '@/data/product-data'
+import { useProductFilterStore } from '@/pinia/useProductFilterStore'
+import type { IProduct } from '@/types/product-type'
+const route = useRoute()
 const props = defineProps<{
-  list_style?: boolean;
-  full_width?: boolean;
-  shop_1600?: boolean;
-  shop_right_side?: boolean;
-  shop_no_side?: boolean;
-}>();
+  list_style?: boolean
+  full_width?: boolean
+  shop_1600?: boolean
+  shop_right_side?: boolean
+  shop_no_side?: boolean
+}>()
 
-const active_tab = ref<string>(props.list_style ? "list" : "grid");
-const store = useProductFilterStore();
+const active_tab = ref<string>(props.list_style ? 'list' : 'grid')
+const store = useProductFilterStore()
+await store.loadProducts()
 
-let filteredProductsItems = ref<IProduct[]>(store.filteredProducts!);
-let startIndex = ref<number>(0);
-let endIndex = ref<number>(store.filteredProducts?.length!);
+let filteredProductsItems = ref(store.filteredProducts!)
+let startIndex = ref<number>(0)
+let endIndex = ref<number>(store.filteredProducts?.length!)
 
 const handlePagination = (data: IProduct[], start: number, end: number) => {
-  filteredProductsItems.value = data;
-  startIndex.value = start;
-  endIndex.value = end;
-};
+  filteredProductsItems.value = data
+  startIndex.value = start
+  endIndex.value = end
+}
 
 function handleActiveTab(tab: string) {
-  active_tab.value = tab;
+  active_tab.value = tab
 }
 watch(
   () => route.query || route.params,
   (newStatus) => {
-    startIndex.value = 0;
+    startIndex.value = 0
     endIndex.value =
-      store.filteredProducts && store.filteredProducts.length > 9 ? 9 : store.filteredProducts?.length!;
-  }
-);
+      store.filteredProducts && store.filteredProducts.length > 9
+        ? 9
+        : store.filteredProducts?.length!
+  },
+)
 </script>

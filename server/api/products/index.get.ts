@@ -13,10 +13,11 @@ export default defineEventHandler(async (event) => {
         product_images(*),
         categories(*),
         sub_categories(*),
-        product_reviews(*)
+        product_reviews(*),
+        tags(*),
+        brand_officials(*)
       `,
     )
-    .eq('featured', params.featured ?? false)
     .not('published_at', 'is', null)
 
   if (params.random) query = query.order('id', { ascending: false })
@@ -31,9 +32,24 @@ export default defineEventHandler(async (event) => {
     throw error
   }
 
-  return data.map((item) => {
+  const result = data.map((item) => {
     return {
       ...item,
+      brand_officials: {
+        ...(item.brand_officials || {}),
+        logo: item.brand_officials
+          ? client.storage
+              .from('images')
+              .getPublicUrl(item.brand_officials.logo).data.publicUrl
+          : null,
+      },
+      images: item.product_images!.map((image) => {
+        return {
+          id: image.id,
+          url: client.storage.from('images').getPublicUrl(image.url).data
+            .publicUrl,
+        }
+      }),
       image: item.product_images[0]
         ? client.storage
             .from('images')
@@ -46,4 +62,10 @@ export default defineEventHandler(async (event) => {
           .reduce((a, b) => a + b, 0) / item.product_reviews.length || 0,
     }
   })
+
+  if (params.topRated) {
+    return result.filter((item) => item.average_ratings >= 4.5)
+  }
+
+  return result
 })

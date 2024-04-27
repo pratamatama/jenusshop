@@ -4,8 +4,8 @@
       class="tp-product-thumb-2 p-relative z-index-1 fix w-img"
       style="background-color: #f2f3f5"
     >
-      <nuxt-link :href="`/product-details/${item.id}`">
-        <img :src="item.img" alt="product-img" />
+      <nuxt-link :href="`/product-details/${item.slug}`">
+        <img :src="item.image" alt="product-img" />
       </nuxt-link>
 
       <!-- product badge -->
@@ -24,7 +24,7 @@
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
             @click="
-              utilityStore.handleOpenModal(`product-modal-${item.id}`, item)
+              utilityStore.handleOpenModal(`product-modal-${item.slug}`, item)
             "
           >
             <svg-quick-view />
@@ -32,72 +32,67 @@
               >Quick View</span
             >
           </button>
-          <a
-            :href="item.shopeeLink"
-            target="_blank"
-            type="button"
-            class="tp-product-action-btn-2 tp-product-quick-view-btn"
-          >
-            <img class="icon" width="20" src="/img/icon/sp.png" alt="" />
-            <span class="tp-product-tooltip tp-product-tooltip-right">View Link</span>
-          </a>
         </div>
       </div>
     </div>
     <div class="tp-product-content-2 pt-15">
       <div class="tp-product-tag-2">
-        <a href="#">{{ item.category.name }}</a>
+        <a href="#">{{ item.categories.name }}</a>
       </div>
       <h3 class="tp-product-title-2">
-        <nuxt-link :href="`/product-details/${item.id}`">{{
-          item.title
+        <nuxt-link :href="`/product-details/${item.slug}`">{{
+          item.name
         }}</nuxt-link>
       </h3>
       <div class="tp-product-rating-icon tp-product-rating-icon-2">
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
+        <template v-if="item.average_ratings > 0">
+          <span v-for="(_, i) in item.average_ratings" :key="i"
+            ><i class="fa-solid fa-star"></i
+          ></span>
+        </template>
+        <template v-else>
+          <span v-for="i in 5" :key="i"
+            ><i class="fa-solid fa-star" style="color: #eaeaea"></i
+          ></span>
+        </template>
       </div>
       <div class="tp-product-price-wrapper-2">
         <div v-if="item.discount > 0">
-          <span class="tp-product-price-2 new-price">Rp.{{ item.price }}</span>
+          <span class="tp-product-price-2 new-price">{{
+            toCurrency(item.price)
+          }}</span>
           <span class="tp-product-price-2 old-price">
-            Rp {{
-              (
+            {{
+              toCurrency(
                 Number(item.price) -
-                (Number(item.price) * Number(item.discount)) / 100
-              ).toFixed(2)
+                  (Number(item.price) * Number(item.discount)) / 100,
+              )
             }}
           </span>
         </div>
-        <span v-else class="tp-product-price-2 new-price"
-          >Rp {{ item.price.toFixed(2) }}</span
-        >
+        <span v-else class="tp-product-price-2 new-price">{{
+          toCurrency(item.price)
+        }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from "@/types/product-type";
-import { useCompareStore } from "@/pinia/useCompareStore";
-import { useCartStore } from "@/pinia/useCartStore";
-import { useUtilityStore } from "@/pinia/useUtilityStore";
-import { useWishlistStore } from "@/pinia/useWishlistStore";
+import type { IProduct } from '@/types/product-type'
+import { useCompareStore } from '@/pinia/useCompareStore'
+import { useCartStore } from '@/pinia/useCartStore'
+import { useUtilityStore } from '@/pinia/useUtilityStore'
+import { useWishlistStore } from '@/pinia/useWishlistStore'
 
-const compareStore = useCompareStore();
-const cartStore = useCartStore();
-const wishlistStore = useWishlistStore();
-const utilityStore = useUtilityStore();
+const compareStore = useCompareStore()
+const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
+const utilityStore = useUtilityStore()
 
-const props = withDefaults(
-  defineProps<{ item: IProduct; spacing?: boolean }>(),
-  {
-    spacing: true,
-  }
-);
+const props = withDefaults(defineProps<{ item: any; spacing?: boolean }>(), {
+  spacing: true,
+})
 </script>
 
 <style scoped>

@@ -7,12 +7,14 @@
         role="tablist"
       >
         <button
-          v-for="(item, i) in product.imageURLs"
+          v-for="(item, i) in product.images"
           :key="i"
-          @click="productStore.handleImageActive(item.img)"
-          :class="`nav-link ${item.img === productStore.activeImg ? 'active' : ''}`"
+          @click="productStore.handleImageActive(item.url)"
+          :class="`nav-link ${
+            item.url === productStore.activeImg ? 'active' : ''
+          }`"
         >
-          <img :src="item.img" alt="nav-img" />
+          <img :src="item.url" alt="nav-img" />
         </button>
       </div>
     </nav>
@@ -42,12 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from "@/types/product-type";
-import { useProductStore } from "@/pinia/useProductStore";
-import { useUtilityStore } from "@/pinia/useUtilityStore";
+import { useProductStore } from '@/pinia/useProductStore'
+import { useUtilityStore } from '@/pinia/useUtilityStore'
 // props
-defineProps<{ product: IProduct }>();
+defineProps<{ product: any }>()
 
-const productStore = useProductStore();
-const utilsStore = useUtilityStore();
+const productStore = useProductStore()
+const utilsStore = useUtilityStore()
+await productStore.loadProducts()
 </script>

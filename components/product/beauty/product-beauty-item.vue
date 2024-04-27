@@ -66,16 +66,6 @@
             <svg-wishlist />
             <span class="tp-product-tooltip">Add To Wishlist</span>
           </button>
-          <a
-            :href="item.shopeeLink"
-            target="_blank"
-            type="button"
-            class="tp-product-action-btn tp-product-quick-view-btn"
-          >
-            <img class="icon" width="20" src="/img/icon/sp.png" alt="" />
-            <!-- <svg-wishlist /> -->
-            <span class="tp-product-tooltip">View Product</span>
-          </a>
         </div>
       </div>
 
@@ -106,23 +96,23 @@
 </template>
 
 <script setup lang="ts">
-import { useCompareStore } from "@/pinia/useCompareStore";
-import { useCartStore } from "@/pinia/useCartStore";
-import { useWishlistStore } from "@/pinia/useWishlistStore";
-import { useUtilityStore } from "@/pinia/useUtilityStore";
-import type { IProduct } from "@/types/product-type";
+import { useCompareStore } from '@/pinia/useCompareStore'
+import { useCartStore } from '@/pinia/useCartStore'
+import { useWishlistStore } from '@/pinia/useWishlistStore'
+import { useUtilityStore } from '@/pinia/useUtilityStore'
+import type { IProduct } from '@/types/product-type'
 // props
 defineProps<{
-  item: IProduct;
-  style_2?: boolean;
-  isCenter?: boolean;
-  primary_style?: boolean;
-}>();
+  item: IProduct
+  style_2?: boolean
+  isCenter?: boolean
+  primary_style?: boolean
+}>()
 
-const compareStore = useCompareStore();
-const cartStore = useCartStore();
-const wishlistStore = useWishlistStore();
-const utilityStore = useUtilityStore();
+const compareStore = useCompareStore()
+const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
+const utilityStore = useUtilityStore()
 </script>
 
 <style scoped>
