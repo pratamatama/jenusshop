@@ -35,7 +35,10 @@
                 <div>
                   <div class="row infinite-container">
                     <div
-                      v-for="item in store.searchFilteredItems?.slice(0,perView)"
+                      v-for="item in store.searchFilteredItems?.slice(
+                        0,
+                        perView,
+                      )"
                       :key="item.id"
                       class="col-xl-4 col-md-6 col-sm-6 infinite-item"
                     >
@@ -73,16 +76,17 @@
 </template>
 
 <script setup lang="ts">
-useSeoMeta({ title: "Search Page" });
+useSeoMeta({ title: 'Search Page' })
 
-import { ref } from "vue";
-import product_data from "@/data/product-data";
-import { useProductFilterStore } from "@/pinia/useProductFilterStore";
+import { ref } from 'vue'
+import product_data from '@/data/product-data'
+import { useProductFilterStore } from '@/pinia/useProductFilterStore'
 
-let perView = ref<number>(9);
-const store = useProductFilterStore();
+let perView = ref<number>(9)
+const store = useProductFilterStore()
+await store.loadProducts()
 
 function handlePerView() {
-  perView.value = perView.value + 3;
+  perView.value = perView.value + 3
 }
 </script>

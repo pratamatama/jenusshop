@@ -105,7 +105,7 @@ export const useProductFilterStore = defineStore('product_filter', () => {
 
     if (route.query.searchText && !route.query.productType) {
       filteredProducts = filteredProducts.filter((prd) =>
-        prd.title.toLowerCase().includes(route.query.searchText.toLowerCase()),
+        prd.name.toLowerCase().includes(route.query.searchText.toLowerCase()),
       )
     }
     if (!route.query.searchText && route.query.productType) {
