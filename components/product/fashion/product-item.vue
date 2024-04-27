@@ -4,7 +4,7 @@
       class="tp-product-thumb-2 p-relative z-index-1 fix w-img"
       style="background-color: #f2f3f5"
     >
-      <nuxt-link :href="`/product-details/${item.slug}`">
+      <nuxt-link :href="`/product-details/${item.id}`">
         <img :src="item.image" alt="product-img" />
       </nuxt-link>
 
@@ -24,7 +24,7 @@
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
             @click="
-              utilityStore.handleOpenModal(`product-modal-${item.slug}`, item)
+              utilityStore.handleOpenModal(`product-modal-${item.id}`, item)
             "
           >
             <svg-quick-view />
@@ -40,7 +40,7 @@
         <a href="#">{{ item.categories.name }}</a>
       </div>
       <h3 class="tp-product-title-2">
-        <nuxt-link :href="`/product-details/${item.slug}`">{{
+        <nuxt-link :href="`/product-details/${item.id}`">{{
           item.name
         }}</nuxt-link>
       </h3>
