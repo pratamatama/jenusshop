@@ -1,6 +1,6 @@
 <template>
+  <NuxtLoadingIndicator />
   <NuxtLayout>
-    <!-- <NuxtLoadingIndicator /> -->
     <NuxtPage />
     <modal-product />
   </NuxtLayout>
