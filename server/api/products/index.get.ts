@@ -31,6 +31,11 @@ export default defineEventHandler(async (event) => {
   if (params.top) query = query.order('sold', { ascending: false })
   if (params.limit) query = query.limit(Number(params.limit))
 
+  if (params.category) {
+    query = query.eq('category_id', params.category)
+    query = query.not('id', 'eq', params.product_id)
+  }
+
   const { data, error } = await query.order('id', { ascending: false })
 
   if (error) {

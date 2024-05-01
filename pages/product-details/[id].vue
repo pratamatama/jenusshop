@@ -9,10 +9,7 @@
     <!-- product details area end -->
 
     <!-- related products start -->
-    <product-related
-      :product-id="product.id"
-      :category="product.categories.name"
-    />
+    <product-related :product="product" />
     <!-- related products end -->
   </div>
 </template>
