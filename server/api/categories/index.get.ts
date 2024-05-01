@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
   const { data, error } = await client
     .from('categories')
-    .select('*, products(*)')
+    .select('*, products(*), sub_categories(*)')
 
   if (error) {
     throw error
